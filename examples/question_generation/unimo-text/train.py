@@ -151,8 +151,10 @@ def run(args):
     dev_ds, dev_data_loader = create_data_loader(dev_ds, tokenizer, args, "test")
 
     if args.do_train:
+        # 训练步数 = 训练轮数 * 训练数据长度
         num_training_steps = args.epochs * len(train_data_loader)
-
+        # 创建一个学习率调度器，它线性地增加学习率
+        # 从0到给定的“learning_rate”然后再降到0。
         lr_scheduler = LinearDecayWithWarmup(args.learning_rate, num_training_steps, args.warmup_propotion)
         # Generate parameter names needed to perform weight decay.
         # All bias and LayerNorm parameters are excluded.
